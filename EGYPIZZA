@@ -1,0 +1,42 @@
+#include<stdio.h>
+#include<string.h>
+#define SIZE 10
+
+char str[SIZE];
+
+int main()
+{
+	int n;
+	int quarter=0,three_quarter=0,half=0;
+	int pizza=0;
+	scanf("%d",&n);
+	while(n--) {
+		fflush(stdin);
+		scanf("%s",str);
+		if(str[0]=='3')
+			three_quarter++;
+		else if(str[2]=='2')
+			half++;
+		else
+			quarter++;
+	}
+	pizza=three_quarter;
+	if(quarter>three_quarter)
+		quarter-=three_quarter;
+	else
+		quarter=0;
+	pizza+=half/2;
+	pizza+=quarter/4;
+	half%=2;
+	quarter%=4;
+	if(half)
+		if(quarter<3)
+			pizza+=1;
+		else
+			pizza+=2;
+	else
+		if(quarter)
+			pizza++;
+	printf("%d",pizza+1);
+	return 0;
+}
