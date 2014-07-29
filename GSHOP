@@ -1,0 +1,106 @@
+#include<stdio.h>
+#define MAX 100
+
+int num[MAX];
+int n;
+
+void sort(int,int);
+int partition(int,int);
+int neg();
+int getmin();
+int nozero();
+
+int main()
+{
+	int test,i,time;
+	int j,numneg,min,sum;
+	scanf("%d",&test);
+	while(test--)
+	{
+		sum=0,min=0;
+		scanf("%d%d",&n,&time);
+		for(i=0; i<n; i++)
+			scanf("%d",&num[i]);
+		sort(0,n-1);
+		//printf("After sorting\n");
+		j=0;
+		numneg = neg();
+		while(time>0 && j<numneg) {
+			num[j] = -num[j];
+			time--;
+			j++;
+		}
+		if(time>0)
+		{
+			if((time%2)!=0 && nozero())
+				min = getmin();
+		}
+		for(i=0; i<n; i++)
+			sum+=num[i];
+		sum=sum-min-min;
+		//printf("After sum\n");
+		printf("%d\n",sum);
+	}
+	return 0;
+}
+
+void sort(int beg,int end)
+{
+	int mid;
+	if(beg<end)
+	{
+		mid = partition(beg,end);
+		sort(beg,mid-1);
+		sort(mid+1,end);
+	}
+}
+
+int partition(int beg,int end)
+{
+	int left=beg,right=end,key=left,temp;
+	while(left<right)
+	{
+		while(num[left]<=num[key])
+			left++;
+		while(num[right]>num[key])
+			right--;
+		if(left<right) {
+			temp = num[left];
+			num[left] = num[right];
+			num[right] = temp;
+		}
+	}
+	temp = num[right];
+	num[right] = num[key];
+	num[key] = temp;
+	return right;
+}
+
+int neg()
+{
+	int count=0,i;
+	for(i=0; i<n; i++)
+		if(num[i]<0)
+			count++;
+	return count;
+}
+
+int nozero()
+{
+	int flag = 1,i;
+	for(i=0; i<n; i++)
+		if(num[i]==0) {
+			flag=0;
+			break;
+		}
+	return flag;
+}
+
+int getmin()
+{
+	int min=num[0],i;
+	for(i=1; i<n; i++)
+		if(min>num[i])
+			min = num[i];
+	return min;
+}
